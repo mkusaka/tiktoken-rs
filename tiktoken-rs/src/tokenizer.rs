@@ -31,6 +31,7 @@ pub enum Tokenizer {
 // Keep this in sync with:
 // https://github.com/openai/tiktoken/blob/63527649963def8c759b0f91f2eb69a40934e468/tiktoken/model.py#L7
 const MODEL_PREFIX_TO_TOKENIZER: &[(&str, Tokenizer)] = &[
+    ("o3-", Tokenizer::O200kBase),
     ("o1-", Tokenizer::O200kBase),
     // chat
     ("chatgpt-4o-", Tokenizer::O200kBase),
@@ -49,6 +50,7 @@ const MODEL_PREFIX_TO_TOKENIZER: &[(&str, Tokenizer)] = &[
 // https://github.com/openai/tiktoken/blob/63527649963def8c759b0f91f2eb69a40934e468/tiktoken/model.py#L22
 const MODEL_TO_TOKENIZER: &[(&str, Tokenizer)] = &[
     // chat
+    ("o1", Tokenizer::O200kBase),
     ("chatgpt-4o-latest", Tokenizer::O200kBase),
     ("gpt-4o", Tokenizer::O200kBase),
     ("gpt-4", Tokenizer::Cl100kBase),
@@ -153,6 +155,8 @@ mod tests {
 
     #[test]
     fn test_get_tokenizer() {
+        assert_eq!(get_tokenizer("o1"), Some(Tokenizer::O200kBase));
+        assert_eq!(get_tokenizer("o3-mini"), Some(Tokenizer::O200kBase));
         assert_eq!(
             get_tokenizer("chatgpt-4o-latest"),
             Some(Tokenizer::O200kBase)
